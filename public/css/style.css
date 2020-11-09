@@ -1,3 +1,5 @@
+/*Index Page CSS*/
+
 .bg{
     background-image: url("../images/intro-bg_1.jpg");
     background-position: center;
@@ -14,3 +16,10 @@
     top:35%;
     left:25%;
 }
+
+/*Sign up Page CSS*/
+
+.signup{
+    margin: 50px;
+}
+

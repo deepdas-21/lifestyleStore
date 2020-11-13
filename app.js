@@ -18,6 +18,10 @@ app.get("/login",function(req,res){
     res.render('login');
 })
 
+app.get("/products",function(req,res){
+    res.render('products');
+})
+
 app.listen(3000,function(){
     console.log("server started at port 3000");
 })

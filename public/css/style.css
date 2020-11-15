@@ -23,12 +23,13 @@
     margin: 50px;
 }
 /* Login page */
-.form-login{
+.form-login,.settings{
     width: 100%;
     max-width: 330px;
     padding: 15px;
     margin: auto;
     margin-top: 10%;
+    margin-bottom: 15%;
 }
 
 .form-signin .checkbox {
@@ -53,4 +54,12 @@
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+  }
+
+  .table{
+    width: 100%;
+    padding: 15px;
+    margin: auto;
+    margin-top: 15%;
+    margin-bottom: 15%;
   }

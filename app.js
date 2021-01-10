@@ -2,7 +2,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const mongoose = require('mongoose');
+const { fileLoader } = require('ejs');
 
+
+mongoose.connect('mongodb://localhost:27017/productsDB', {useNewUrlParser: true, useUnifiedTopology: true});
+
+const userSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    password: String,
+    contact: Number,
+    address: String
+});
+
+const User = mongoose.model("user",userSchema);
 
 let userDetails = [""];
 
@@ -41,47 +55,38 @@ app.listen(3000,function(){
 
 //signup
 app.post("/signup",function(req,res){
-    let count = 0;
-    const userSignup={
-         name: req.body.userName,
-         email: req.body.userEmail,
-         password: req.body.password,
-         contact: req.body.contact,
-         address: req.body.address
-    }
-        for (let i = 1; i < userDetails.length; i++) {
-          if (userDetails[i].email === userSignup.email) {   
-                count++;
-          }
-         }
-         if (count == 0) {
-            userDetails.push(userSignup);
-            let massage = "You have successfully signed in to our Page.Continue your Shopping by clicking below."      
-            res.render("success",{successMassage: massage});
-         } else {
-            count = 0;
-            let massage = "It seems this E-mail Account is Already Signed in.Try to Sign Up Instead."
-            res.render('failiur',{failiurMassage: massage});
-         }
+    User.findOne({email: req.body.userEmail,password: req.body.password},function(err,founditem){
+        if(founditem === null)
+        {
+            const user = new User({
+                name: req.body.userName,
+                email: req.body.userEmail,
+                password: req.body.password,
+                contact: req.body.contact,
+                address: req.body.address
+           });
+            user.save(function(err){
+                if(!err)
+                {
+                    res.redirect("/products");
+                }
+            })
+            console.log("true");
+        } else {
+          res.render("failiur",{failiurMassage: "It seems You are already a member of our family.Try to login instead."});
+        }
+    })   
     });
 
 //login page
 
 app.post("/login",function(req,res) {
-    const userLogin = {
-        email: req.body.email,
-        password: req.body.password
-    }
-    let count = 0;
-    for (let i = 0; i < userDetails.length; i++) {
-           if (userLogin.email === userDetails[i].email && userLogin.password === userDetails[i].password) {
-               count++;
-           }
-    }
-    if (count == 1) {
-        res.redirect('/products');
-    } else {
-        let massage = "It seems You are Not Logged In to our Server.PLease Try to Sign up Instead."
-        res.render('failiur',{failiurMassage: massage});
-    }
+    User.findOne({email: req.body.email,password: req.body.password},function(err,founditem){
+        if(founditem !== null)
+        {
+            res.redirect("/products");
+        } else {
+            res.render("failiur",{failiurMassage: "Your Account doesn't exist in our database.Try to Signup Instead!"});
+        }
+    })
 })

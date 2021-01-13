@@ -9,19 +9,28 @@
             <th scope="col">Submit</th>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            <% var sum = 0 %>
+            <% for( let i = 0; i < products.length; i++ ) { %>
+                <% const product = products[i] %>
+                <tr>
+                    <th scope="row"><%= i+1 %></th>
+                    <td><%= product._id%></td>
+                    <td><%= product.name %></td>
+                    <td><%= product.price %></td>
+                    <td></td>
+                </tr>
+                <% var price = parseFloat(product.price); %>
+                <% sum = sum + price; %>
+            <% } %>
+            
             <tr>
                 <td></td>
                 <td></td>
                 <td>Total</td>
-                <td></td>
-                <td><button class="btn btn-primary">Submit</button></td>
+                <td><%= sum+",000.00" %></td>
+                <form action="/cart" method="post">
+                    <td><button class="btn btn-primary">Submit</button></td>
+                </form>
             </tr>
         </tbody>
     </table>

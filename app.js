@@ -59,9 +59,6 @@ app.get("/cart",function(req,res){
         res.render('cart',{products: productArray});
 })
 
-app.get("/products",function(req,res){
-    res.render('products');
-});
 
 app.listen(3000,function(){
     console.log("server started at port 3000");
@@ -105,9 +102,11 @@ app.post("/login",function(req,res) {
 })
 
 app.get("/:name",function(req,res){
+    const id = req.params.name;
     res.render('products',{
-        id: req.params.name
+        id: id
     });
+    
 })
 
 let productArray = [];
@@ -120,7 +119,7 @@ app.post("/products",function(req,res){
         price: price
     });
     productArray.push(product);
-    User.updateOne({_id: id},{productsBrought: productArray},function(err){
+     User.updateOne({_id: id},{productsBrought: productArray},function(err){
         if(!err){
             console.log("successfully updated");
         }
@@ -149,11 +148,25 @@ app.post("/settings",function(req,res){
     const email = req.body.email;
     const oldPassword = req.body.oldPassword;
     const newPassword = req.body.newPassword;
-    User.updateOne({email: email,password:oldPassword},function(err){
+    User.updateOne({email: email,password:oldPassword},{password:newPassword},function(err){
         if(err){
             res.render("failiur",{failiurMassage: "There is a problem while setting up your password.Please try again later."});
         } else {
             res.render("success",{successMassage: 'Successfully Updated your new Password.Please Login with  your new Password'});
         }
     })
+})
+
+app.post("/delete",function(req,res){
+    const deleteItem = req.body.item;
+
+    User.find({productsBrought:productArray},function(err,founditem){
+        const id = founditem._id;
+        productArray.splice(deleteItem,1);
+        User.updateOne({id: id},{productsBrought: productArray},function(err){
+        if("!err")
+        res.redirect("/cart");
+    })
+    })
+    
 })

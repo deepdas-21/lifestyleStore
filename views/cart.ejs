@@ -13,11 +13,14 @@
             <% for( let i = 0; i < products.length; i++ ) { %>
                 <% const product = products[i] %>
                 <tr>
+                    <form action="/delete" method="post">
                     <th scope="row"><%= i+1 %></th>
+                    <input type="hidden" name="item" value="<%= i %>">
                     <td><%= product._id%></td>
                     <td><%= product.name %></td>
                     <td><%= product.price %></td>
-                    <td></td>
+                        <td><button class="btn btn-danger">Cancel</button></td>
+                    </form>
                 </tr>
                 <% var price = parseFloat(product.price); %>
                 <% sum = sum + price; %>

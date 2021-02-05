@@ -12,6 +12,7 @@
             <% var sum = 0 %>
             <% for( let i = 0; i < products.length; i++ ) { %>
                 <% const product = products[i] %>
+                <% if (product != null || product != undefined) { %>
                 <tr>
                     <form action="/delete" method="post">
                     <th scope="row"><%= i+1 %></th>
@@ -24,6 +25,7 @@
                 </tr>
                 <% var price = parseFloat(product.price); %>
                 <% sum = sum + price; %>
+                <% } %>
             <% } %>
             
             <tr>

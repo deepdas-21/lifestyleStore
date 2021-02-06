@@ -24,7 +24,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect('mongodb+srv://admin-deep:deep2002@cluster0.aptka.mongodb.net/productsDB', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/productsDB', {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
@@ -220,6 +220,6 @@ app.post("/delete",function(req,res){
     })
 })
 
-app.listen(process.env.PORT,function(){
+app.listen(3000,function(){
     console.log("server started at port 3000");
 })
